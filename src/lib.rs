@@ -149,11 +149,7 @@
 //! For more example usage, consider investigating the `abomonation_derive` crate,
 //! which makes use of this crate, and is fairly simple.
 
-#[cfg(all(
-    not(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "wasi"))),
-    feature = "proc-macro"
-))]
-extern crate proc_macro;
+extern crate proc_macro2;
 
 use std::collections::HashSet;
 
@@ -2397,11 +2393,7 @@ pub trait MacroResult {
     ///
     /// *This method is available if `synstructure` is built with the
     /// `"proc-macro"` feature.*
-    #[cfg(all(
-        not(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "wasi"))),
-        feature = "proc-macro"
-    ))]
-    fn into_stream(self) -> proc_macro::TokenStream
+    fn into_stream(self) -> proc_macro2::TokenStream
     where
         Self: Sized,
     {
@@ -2412,25 +2404,21 @@ pub trait MacroResult {
     }
 }
 
-#[cfg(all(
-    not(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "wasi"))),
-    feature = "proc-macro"
-))]
-impl MacroResult for proc_macro::TokenStream {
+impl MacroResult for proc_macro2::TokenStream {
     fn into_result(self) -> Result<TokenStream> {
         Ok(self.into())
     }
 
-    fn into_stream(self) -> proc_macro::TokenStream {
+    fn into_stream(self) -> proc_macro2::TokenStream {
         self
     }
 }
 
-impl MacroResult for TokenStream {
-    fn into_result(self) -> Result<TokenStream> {
-        Ok(self)
-    }
-}
+// impl MacroResult for TokenStream {
+//     fn into_result(self) -> Result<TokenStream> {
+//         Ok(self)
+//     }
+// }
 
 impl<T: MacroResult> MacroResult for Result<T> {
     fn into_result(self) -> Result<TokenStream> {

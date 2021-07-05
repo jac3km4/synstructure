@@ -18,12 +18,12 @@ default = ["proc-macro"]
 proc-macro = ["proc-macro2/proc-macro", "syn/proc-macro", "quote/proc-macro"]
 
 [dependencies]
-proc-macro2 = { version = "1", default-features = false }
-quote = { version = "1", default-features = false }
+proc-macro2 = { version = "=1.0.24", default-features = false }
+quote = { version = "=1.0.8", default-features = false }
 unicode-xid = "0.2"
 
 [dependencies.syn]
-version = "1"
+version = "=1.0.48"
 default-features = false
 features = ["derive", "parsing", "printing", "clone-impls", "visit", "extra-traits"]
 
@@ -34,3 +34,7 @@ synstructure_test_traits = { version = "0.1", path = "test_traits" }
 
 [workspace]
 members = ["test_traits", "test_suite", "test_suite/test_macros"]
+
+[patch.crates-io]
+proc-macro2 = { git = "https://github.com/Freax13/proc-macro2", branch = "readd-wasm" }
+syn = { git = "https://github.com/Freax13/syn", branch = "readd-proc-macro-wasm" }

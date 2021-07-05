@@ -1,20 +1,13 @@
 //! This module provides two utility macros for testing custom derives. They can
 //! be used together to eliminate some of the boilerplate required in order to
 //! declare and test custom derive implementations.
+extern crate proc_macro;
 
 // Re-exports used by the decl_derive! and test_derive!
 pub use proc_macro2::TokenStream as TokenStream2;
 pub use syn::{parse_str, DeriveInput};
 
-#[cfg(all(
-    not(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "wasi"))),
-    feature = "proc-macro"
-))]
 pub use proc_macro::TokenStream;
-#[cfg(all(
-    not(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "wasi"))),
-    feature = "proc-macro"
-))]
 pub use syn::parse;
 
 /// The `decl_derive!` macro declares a custom derive wrapper. It will parse the
@@ -80,10 +73,6 @@ pub use syn::parse;
 ///
 /// *This macro is available if `synstructure` is built with the `"proc-macro"`
 /// feature.*
-#[cfg(all(
-    not(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "wasi"))),
-    feature = "proc-macro"
-))]
 #[macro_export]
 macro_rules! decl_derive {
     // XXX: Switch to using this variant everywhere?
@@ -139,10 +128,6 @@ macro_rules! decl_derive {
 ///
 /// *This macro is available if `synstructure` is built with the `"proc-macro"`
 /// feature.*
-#[cfg(all(
-    not(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "wasi"))),
-    feature = "proc-macro"
-))]
 #[macro_export]
 macro_rules! decl_attribute {
     ([$attribute:ident] => $(#[$($attrs:tt)*])* $inner:path) => {
