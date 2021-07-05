@@ -149,7 +149,7 @@
 //! For more example usage, consider investigating the `abomonation_derive` crate,
 //! which makes use of this crate, and is fairly simple.
 
-extern crate proc_macro2;
+extern crate proc_macro;
 
 use std::collections::HashSet;
 
@@ -2393,7 +2393,7 @@ pub trait MacroResult {
     ///
     /// *This method is available if `synstructure` is built with the
     /// `"proc-macro"` feature.*
-    fn into_stream(self) -> proc_macro2::TokenStream
+    fn into_stream(self) -> proc_macro::TokenStream
     where
         Self: Sized,
     {
@@ -2404,21 +2404,21 @@ pub trait MacroResult {
     }
 }
 
-impl MacroResult for proc_macro2::TokenStream {
+impl MacroResult for proc_macro::TokenStream {
     fn into_result(self) -> Result<TokenStream> {
         Ok(self.into())
     }
 
-    fn into_stream(self) -> proc_macro2::TokenStream {
+    fn into_stream(self) -> proc_macro::TokenStream {
         self
     }
 }
 
-// impl MacroResult for TokenStream {
-//     fn into_result(self) -> Result<TokenStream> {
-//         Ok(self)
-//     }
-// }
+impl MacroResult for TokenStream {
+    fn into_result(self) -> Result<TokenStream> {
+        Ok(self)
+    }
+}
 
 impl<T: MacroResult> MacroResult for Result<T> {
     fn into_result(self) -> Result<TokenStream> {

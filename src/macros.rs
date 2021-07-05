@@ -77,10 +77,10 @@ pub use syn::parse;
 macro_rules! decl_derive {
     // XXX: Switch to using this variant everywhere?
     ([$derives:ident $($derive_t:tt)*] => $(#[$($attrs:tt)*])* $inner:path) => {
-        #[no_mangle]
+        #[proc_macro_derive($derives $($derive_t)*)]
         #[allow(non_snake_case)]
         $(#[$($attrs)*])*
-        pub extern "C" fn $derives(
+        pub fn $derives(
             i: $crate::macros::TokenStream
         ) -> $crate::macros::TokenStream {
             match $crate::macros::parse::<$crate::macros::DeriveInput>(i) {
@@ -131,9 +131,9 @@ macro_rules! decl_derive {
 #[macro_export]
 macro_rules! decl_attribute {
     ([$attribute:ident] => $(#[$($attrs:tt)*])* $inner:path) => {
-        #[no_mangle]
+        #[proc_macro_attribute]
         $(#[$($attrs)*])*
-        pub extern "C" fn $attribute(
+        pub fn $attribute(
             attr: $crate::macros::TokenStream,
             i: $crate::macros::TokenStream,
         ) -> $crate::macros::TokenStream {
